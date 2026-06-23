@@ -1,0 +1,136 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   DESIGN TOKENS
+   Black & white with a single signal-red accent.
+   Mirrored in tailwind.config.ts — keep both in sync.
+   ============================================================ */
+:root {
+  --bg: #0a0a0a; /* near-black base */
+  --bg-deep: #050505; /* deepest layer */
+  --fg: #dcd2c6; /* warm parchment — base body/prose text temperature */
+  --heading: #eee4d7; /* warm off-white — display headings */
+  --ember: #d23723; /* warm ember red — atmospheric mono labels */
+  --nav-link: #e1d7c8; /* warm nav-link tone */
+  --red: #e10600; /* signal red — structural accent only */
+  --red-deep: #b8000b; /* deep red — fills */
+}
+
+@layer base {
+  html {
+    /* Lenis drives smooth scroll; keep native behavior 'auto' so the
+       two don't fight. Anchor jumps are handled in JS. */
+    scroll-behavior: auto;
+  }
+
+  body {
+    background-color: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-body), system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background: var(--red);
+    color: var(--bg);
+  }
+
+  /* Visible, on-brand focus ring for keyboard users. */
+  :focus-visible {
+    outline: 2px solid var(--red);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+}
+
+@layer components {
+  /* Eyebrow / micro-label used throughout the resolved portfolio. */
+  .label {
+    font-family: var(--font-mono), monospace;
+    font-size: 11px;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+  }
+
+  /* ----------------------------------------------------------------
+     PROJECT BUTTON
+     Gumroad-inspired "lift + hard offset shadow" interaction, themed
+     to the site. The card keeps its resting colors; on hover it lifts
+     and reveals a signal-red hard offset shadow behind it.
+     ---------------------------------------------------------------- */
+  .project-button {
+    color: var(--fg);
+    background: var(--bg);
+    border: 1px solid rgba(245, 245, 242, 0.15);
+    border-radius: 4px;
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  /* Mirror hover for keyboard focus. Colors stay put; red shadow appears. */
+  .project-button:hover,
+  .project-button:focus-visible {
+    transform: translate(-0.25rem, -0.25rem);
+    box-shadow: 0.25rem 0.25rem 0 var(--red);
+  }
+
+  .project-button:focus-visible {
+    outline-offset: 5px;
+  }
+
+  .project-button:active {
+    transform: translate(0, 0);
+    box-shadow: none;
+  }
+}
+
+/* ============================================================
+   FILM GRAIN
+   A single tiling SVG noise texture, animated by nudging its
+   position each frame (steps) for an organic flicker.
+   Optimized: GPU transform only, no repaint of the texture.
+   ============================================================ */
+.grain {
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%27160%27%20height=%27160%27%3E%3Cfilter%20id=%27n%27%3E%3CfeTurbulence%20type=%27fractalNoise%27%20baseFrequency=%270.8%27%20numOctaves=%272%27%20stitchTiles=%27stitch%27/%3E%3C/filter%3E%3Crect%20width=%27100%25%27%20height=%27100%25%27%20filter=%27url%28%23n%29%27/%3E%3C/svg%3E");
+  animation: grain 0.7s steps(1) infinite;
+  will-change: transform;
+}
+
+@keyframes grain {
+  0% { transform: translate(0, 0); }
+  10% { transform: translate(-3%, -2%); }
+  20% { transform: translate(-7%, 3%); }
+  30% { transform: translate(4%, -5%); }
+  40% { transform: translate(-2%, 7%); }
+  50% { transform: translate(-7%, 1%); }
+  60% { transform: translate(5%, 4%); }
+  70% { transform: translate(-5%, -5%); }
+  80% { transform: translate(3%, 7%); }
+  90% { transform: translate(-4%, -3%); }
+  100% { transform: translate(0, 0); }
+}
+
+/* ============================================================
+   REDUCED MOTION
+   Honor the user's OS-level preference: kill the atmospheric
+   motion. (JS also short-circuits parallax / smooth-scroll.)
+   Content stays fully readable and navigable.
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  .grain {
+    animation: none !important;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

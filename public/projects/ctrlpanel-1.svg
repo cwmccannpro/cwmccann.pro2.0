@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000">
+  <rect width="1600" height="1000" fill="#0A0A0A"/>
+  <rect x="0.5" y="0.5" width="1599" height="999" fill="none" stroke="#1f1f1f"/>
+  <rect x="80" y="80" width="120" height="6" fill="#E10600"/>
+  <text x="80" y="200" font-family="Georgia, 'Cormorant Garamond', serif" font-size="120" font-weight="600" fill="#F5F5F2">Ctrlpanel</text>
+  <text x="80" y="270" font-family="monospace" font-size="26" letter-spacing="6" fill="#8a8a88">SCREENSHOT 01 — PLACEHOLDER</text>
+  <text x="80" y="930" font-family="monospace" font-size="22" letter-spacing="2" fill="#5a5a58">Replace in /public/projects/ctrlpanel-1.svg</text>
+</svg>

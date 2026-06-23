@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Hanken+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  html{scroll-behavior:auto;}
+  body{margin:0;padding:0;background:#0A0A0A;color:#F5F5F2;font-family:'Hanken Grotesk',sans-serif;-webkit-font-smoothing:antialiased;}
+  ::selection{background:#E10600;color:#0A0A0A;}
+  @keyframes grain{0%{transform:translate(0,0)}10%{transform:translate(-3%,-2%)}20%{transform:translate(-7%,3%)}30%{transform:translate(4%,-5%)}40%{transform:translate(-2%,7%)}50%{transform:translate(-7%,1%)}60%{transform:translate(5%,4%)}70%{transform:translate(-5%,-5%)}80%{transform:translate(3%,7%)}90%{transform:translate(-4%,-3%)}100%{transform:translate(0,0)}}
+  @keyframes bob{0%,100%{transform:scaleY(1);opacity:.55;transform-origin:top}50%{transform:scaleY(0.5);opacity:1;transform-origin:top}}
+  @keyframes breathe{0%,100%{opacity:.45}50%{opacity:.7}}
+</style>
+</helmet>
+
+<div data-l="root" ref="{{ setRoot }}" style="background:#0A0A0A;overflow-x:hidden;">
+
+  <!-- ============ FIXED HEADER (persistent corner logo emerges as hero resolves) ============ -->
+  <div data-l="header" style="position:fixed;top:0;left:0;right:0;z-index:60;opacity:0;display:flex;align-items:center;justify-content:space-between;padding:18px 48px;background:linear-gradient(180deg,#0A0A0A 30%,rgba(10,10,10,0));border-bottom:1px solid rgba(225,6,0,0.45);will-change:opacity;">
+    <div style="width:48px;height:34px;">
+      <svg viewBox="0 0 1000 600" width="100%" height="100%" style="overflow:visible;display:block;" aria-label="CWM monogram">
+        <text x="500" y="392" text-anchor="middle" font-family="'Cormorant Garamond',serif" font-weight="600" font-size="300" letter-spacing="6" paint-order="stroke fill">
+          <tspan fill="#F5F5F2">C</tspan><tspan fill="#F5F5F2" stroke="#E10600" stroke-width="4">W</tspan><tspan fill="#F5F5F2">M</tspan>
+        </text>
+      </svg>
+    </div>
+    <nav style="display:flex;gap:38px;">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(245,245,242,0.6);cursor:pointer;" style-hover="color:#E10600;">Work</span>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(245,245,242,0.6);cursor:pointer;" style-hover="color:#E10600;">About</span>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(245,245,242,0.6);cursor:pointer;" style-hover="color:#E10600;">Contact</span>
+    </nav>
+  </div>
+
+  <!-- ============ HERO TRACK (sticky stage scrubs across this height) ============ -->
+  <div data-l="track" style="position:relative;height:300vh;background:#050505;">
+    <div data-l="stage" style="position:sticky;top:0;height:100vh;overflow:hidden;background:#050505;">
+
+      <!-- LAYER 1 — far haze (deep gradient + faint warm core glow) -->
+      <div data-l="haze" style="position:absolute;inset:-8%;will-change:transform,opacity;background:
+        radial-gradient(60% 55% at 50% 46%, rgba(70,18,16,0.55) 0%, rgba(20,8,8,0.0) 55%),
+        radial-gradient(120% 90% at 50% 50%, #100c0c 0%, #070606 50%, #040404 100%);"></div>
+
+      <!-- LAYER 2 — mid fog, two halves that part on scroll -->
+      <div data-l="fog1" style="position:absolute;top:-20%;bottom:-20%;left:-30%;width:90%;will-change:transform,opacity;filter:blur(26px);background:radial-gradient(50% 60% at 60% 50%, rgba(150,150,148,0.16) 0%, rgba(120,120,118,0.06) 40%, rgba(0,0,0,0) 72%);"></div>
+      <div data-l="fog2" style="position:absolute;top:-20%;bottom:-20%;right:-30%;width:90%;will-change:transform,opacity;filter:blur(26px);background:radial-gradient(50% 60% at 40% 52%, rgba(150,150,148,0.16) 0%, rgba(120,120,118,0.06) 40%, rgba(0,0,0,0) 72%);"></div>
+
+      <!-- HERO TEXT (top label + name), fades out as it resolves -->
+      <div data-l="heroText" style="position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;align-items:center;padding:7vh 6vw;pointer-events:none;will-change:transform,opacity;z-index:3;">
+        <div style="display:flex;align-items:center;gap:12px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.34em;text-transform:uppercase;color:rgba(245,245,242,0.6);">
+          <span style="width:6px;height:6px;border-radius:50%;background:#E10600;animation:breathe 3.4s ease-in-out infinite;"></span>
+          Portfolio — Vol. 01
+          <span style="opacity:0.4;">/</span>
+          MMXXVI
+        </div>
+        <div style="text-align:center;">
+          <div style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(30px,4.4vw,62px);letter-spacing:0.16em;line-height:1.05;color:#F5F5F2;">{{ name }}</div>
+          <div style="margin-top:20px;display:flex;align-items:center;justify-content:center;gap:14px;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.3em;text-transform:uppercase;color:rgba(245,245,242,0.6);">
+            <span style="width:26px;height:1px;background:#E10600;"></span>
+            {{ role }}
+            <span style="width:26px;height:1px;background:#E10600;"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- MONOGRAM — centerpiece, shrinks toward corner -->
+      <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:4;pointer-events:none;">
+        <div data-l="mono" style="width:min(74vw,880px);will-change:transform,opacity;">
+          <svg viewBox="0 0 1000 600" width="100%" height="100%" style="overflow:visible;display:block;" aria-label="CWM monogram">
+            <defs>
+              <filter id="bloom" x="-70%" y="-70%" width="240%" height="240%">
+                <feGaussianBlur stdDeviation="24"></feGaussianBlur>
+              </filter>
+              <filter id="engrave" x="-25%" y="-25%" width="150%" height="150%">
+                <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#000000" flood-opacity="0.6"></feDropShadow>
+                <feDropShadow dx="0" dy="-1" stdDeviation="0.5" flood-color="#ffffff" flood-opacity="0.16"></feDropShadow>
+              </filter>
+            </defs>
+            <!-- soft red bloom behind -->
+            <text x="500" y="392" text-anchor="middle" filter="url(#bloom)" opacity="0.4" fill="#E10600" font-family="'Cormorant Garamond',serif" font-weight="600" font-size="300" letter-spacing="6">
+              <tspan>C</tspan><tspan>W</tspan><tspan>M</tspan>
+            </text>
+            <!-- engraved serif letters, signal-red keyline on the central W -->
+            <text x="500" y="392" text-anchor="middle" filter="url(#engrave)" font-family="'Cormorant Garamond',serif" font-weight="600" font-size="300" letter-spacing="6" paint-order="stroke fill">
+              <tspan fill="#F5F5F2">C</tspan><tspan fill="#F5F5F2" stroke="#E10600" stroke-width="4">W</tspan><tspan fill="#F5F5F2">M</tspan>
+            </text>
+          </svg>
+        </div>
+      </div>
+
+      <!-- LAYER 4 — animated film grain -->
+      <div data-l="grain" style="position:absolute;top:-50%;left:-50%;width:200%;height:200%;z-index:6;pointer-events:none;opacity:0.17;mix-blend-mode:overlay;animation:grain 0.7s steps(1) infinite;background-image:url(data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%27160%27%20height=%27160%27%3E%3Cfilter%20id=%27n%27%3E%3CfeTurbulence%20type=%27fractalNoise%27%20baseFrequency=%270.8%27%20numOctaves=%272%27%20stitchTiles=%27stitch%27/%3E%3C/filter%3E%3Crect%20width=%27100%25%27%20height=%27100%25%27%20filter=%27url%28%23n%29%27/%3E%3C/svg%3E);"></div>
+
+      <!-- LAYER 5 — deep vignette frame -->
+      <div data-l="vignette" style="position:absolute;inset:0;z-index:7;pointer-events:none;background:radial-gradient(120% 110% at 50% 48%, rgba(0,0,0,0) 38%, rgba(0,0,0,0.55) 74%, rgba(0,0,0,0.92) 100%);"></div>
+
+      <!-- scroll hint -->
+      <div data-l="scrollHint" style="position:absolute;bottom:30px;left:50%;transform:translateX(-50%);z-index:8;display:flex;flex-direction:column;align-items:center;gap:12px;pointer-events:none;">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.34em;text-transform:uppercase;color:rgba(245,245,242,0.5);">Scroll</span>
+        <span style="width:1px;height:48px;background:linear-gradient(180deg,#E10600,rgba(225,6,0,0));animation:bob 2.2s ease-in-out infinite;"></span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============ RESOLVED STATE — minimal structured portfolio ============ -->
+  <section style="position:relative;background:#0A0A0A;padding:150px 0 130px;">
+    <div style="max-width:1200px;margin:0 auto;padding:0 48px;">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid #E10600;padding-bottom:16px;margin-bottom:4px;">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.26em;text-transform:uppercase;color:#F5F5F2;">Selected Work</span>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.26em;text-transform:uppercase;color:rgba(245,245,242,0.45);">(04) — 2025</span>
+      </div>
+
+      <a href="#" style="display:grid;grid-template-columns:64px 1fr auto;gap:36px;align-items:center;padding:38px 0;border-bottom:1px solid rgba(245,245,242,0.12);text-decoration:none;color:#F5F5F2;transition:padding .35s ease;" style-hover="padding-left:18px;">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:rgba(245,245,242,0.4);">01</span>
+        <span style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(28px,4.4vw,56px);line-height:1;">Echo Chamber</span>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:rgba(245,245,242,0.5);">Title Sequence · 2025</span>
+      </a>
+      <a href="#" style="display:grid;grid-template-columns:64px 1fr auto;gap:36px;align-items:center;padding:38px 0;border-bottom:1px solid rgba(245,245,242,0.12);text-decoration:none;color:#F5F5F2;transition:padding .35s ease;" style-hover="padding-left:18px;">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:rgba(245,245,242,0.4);">02</span>
+        <span style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(28px,4.4vw,56px);line-height:1;">Low Tide</span>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:rgba(245,245,242,0.5);">Short Film · 2024</span>
+      </a>
+      <a href="#" style="display:grid;grid-template-columns:64px 1fr auto;gap:36px;align-items:center;padding:38px 0;border-bottom:1px solid rgba(245,245,242,0.12);text-decoration:none;color:#F5F5F2;transition:padding .35s ease;" style-hover="padding-left:18px;">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:rgba(245,245,242,0.4);">03</span>
+        <span style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(28px,4.4vw,56px);line-height:1;">Static Bloom</span>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:rgba(245,245,242,0.5);">Identity · 2024</span>
+      </a>
+      <a href="#" style="display:grid;grid-template-columns:64px 1fr auto;gap:36px;align-items:center;padding:38px 0;border-bottom:1px solid rgba(245,245,242,0.12);text-decoration:none;color:#F5F5F2;transition:padding .35s ease;" style-hover="padding-left:18px;">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:rgba(245,245,242,0.4);">04</span>
+        <span style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(28px,4.4vw,56px);line-height:1;">Nightshift</span>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:rgba(245,245,242,0.5);">Music Video · 2023</span>
+      </a>
+
+      <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:64px;margin-top:120px;align-items:start;">
+        <div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.26em;text-transform:uppercase;color:#E10600;margin-bottom:22px;">About</div>
+          <p style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(24px,2.6vw,34px);line-height:1.34;margin:0;color:#F5F5F2;text-wrap:pretty;">A director and designer working at the seam of motion, type, and atmosphere — building title work and brand systems that open like the first frame of a film.</p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:26px;padding-top:8px;">
+          <div>
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(245,245,242,0.4);margin-bottom:8px;">Based in</div>
+            <div style="font-family:'Hanken Grotesk',sans-serif;font-size:16px;color:#F5F5F2;">Los Angeles, CA</div>
+          </div>
+          <div>
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(245,245,242,0.4);margin-bottom:8px;">Disciplines</div>
+            <div style="font-family:'Hanken Grotesk',sans-serif;font-size:16px;color:#F5F5F2;line-height:1.5;">Direction, Title Design,<br>Brand Identity, Motion</div>
+          </div>
+          <div>
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(245,245,242,0.4);margin-bottom:8px;">Contact</div>
+            <a href="#" style="font-family:'Hanken Grotesk',sans-serif;font-size:16px;color:#F5F5F2;text-decoration:none;border-bottom:1px solid #E10600;padding-bottom:2px;" style-hover="color:#E10600;"><span class="__cf_email__" data-cfemail="b9cacdccddd0d6f9daced497ced6cbd2">[email&#160;protected]</span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ STYLE GUIDE ============ -->
+  <section style="position:relative;background:#050505;border-top:1px solid rgba(245,245,242,0.08);padding:120px 0 150px;">
+    <div style="max-width:1200px;margin:0 auto;padding:0 48px;">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid #E10600;padding-bottom:16px;margin-bottom:56px;">
+        <span style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(30px,3.4vw,44px);line-height:1;color:#F5F5F2;">Visual System</span>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.26em;text-transform:uppercase;color:rgba(245,245,242,0.45);">Style Guide</span>
+      </div>
+
+      <!-- PALETTE -->
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.26em;text-transform:uppercase;color:#E10600;margin-bottom:20px;">01 / Palette</div>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-bottom:80px;">
+        <div>
+          <div style="height:128px;background:#0A0A0A;border:1px solid rgba(245,245,242,0.12);"></div>
+          <div style="margin-top:12px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#F5F5F2;">#0A0A0A</div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(245,245,242,0.4);margin-top:3px;">Near-black · base</div>
+        </div>
+        <div>
+          <div style="height:128px;background:#050505;border:1px solid rgba(245,245,242,0.12);"></div>
+          <div style="margin-top:12px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#F5F5F2;">#050505</div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(245,245,242,0.4);margin-top:3px;">Deepest layer</div>
+        </div>
+        <div>
+          <div style="height:128px;background:#F5F5F2;"></div>
+          <div style="margin-top:12px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#F5F5F2;">#F5F5F2</div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(245,245,242,0.4);margin-top:3px;">Off-white · text</div>
+        </div>
+        <div>
+          <div style="height:128px;background:#E10600;"></div>
+          <div style="margin-top:12px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#F5F5F2;">#E10600</div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(245,245,242,0.4);margin-top:3px;">Signal red · accent</div>
+        </div>
+        <div>
+          <div style="height:128px;background:#B8000B;"></div>
+          <div style="margin-top:12px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#F5F5F2;">#B8000B</div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(245,245,242,0.4);margin-top:3px;">Deep red · fill</div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:24px;margin-bottom:24px;">
+        <!-- TYPE SCALE -->
+        <div style="border:1px solid rgba(245,245,242,0.08);background:rgba(255,255,255,0.015);padding:34px;">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.26em;text-transform:uppercase;color:#E10600;margin-bottom:28px;">02 / Typography</div>
+          <div style="display:flex;flex-direction:column;gap:26px;">
+            <div style="display:flex;align-items:baseline;justify-content:space-between;gap:20px;border-bottom:1px solid rgba(245,245,242,0.08);padding-bottom:22px;">
+              <span style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:54px;line-height:0.9;color:#F5F5F2;">Display Aa</span>
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(245,245,242,0.45);text-align:right;flex:none;">Cormorant<br>Garamond · 500<br>64–104px</span>
+            </div>
+            <div style="display:flex;align-items:baseline;justify-content:space-between;gap:20px;border-bottom:1px solid rgba(245,245,242,0.08);padding-bottom:22px;">
+              <span style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:34px;line-height:0.9;color:#F5F5F2;">Heading Aa</span>
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(245,245,242,0.45);text-align:right;flex:none;">Cormorant<br>Garamond · 500<br>28–44px</span>
+            </div>
+            <div style="display:flex;align-items:baseline;justify-content:space-between;gap:20px;border-bottom:1px solid rgba(245,245,242,0.08);padding-bottom:22px;">
+              <span style="font-family:'Hanken Grotesk',sans-serif;font-weight:400;font-size:18px;color:#F5F5F2;">Body — Hanken Grotesk</span>
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(245,245,242,0.45);text-align:right;flex:none;">Hanken<br>Grotesk · 400<br>16–18px / 1.5</span>
+            </div>
+            <div style="display:flex;align-items:baseline;justify-content:space-between;gap:20px;">
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.22em;text-transform:uppercase;color:#F5F5F2;">Label / Mono</span>
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(245,245,242,0.45);text-align:right;flex:none;">IBM Plex<br>Mono · 500<br>11–12px · 0.2em</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- MONOGRAM -->
+        <div style="border:1px solid rgba(245,245,242,0.08);background:#0A0A0A;padding:34px;display:flex;flex-direction:column;">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.26em;text-transform:uppercase;color:#E10600;margin-bottom:20px;">03 / Monogram</div>
+          <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:10px 0;">
+            <div style="width:78%;">
+              <svg viewBox="0 0 1000 600" width="100%" height="100%" style="overflow:visible;display:block;">
+                <defs>
+                  <filter id="bloom2" x="-70%" y="-70%" width="240%" height="240%"><feGaussianBlur stdDeviation="22"></feGaussianBlur></filter>
+                  <filter id="engrave2" x="-25%" y="-25%" width="150%" height="150%"><feDropShadow dx="0" dy="4" stdDeviation="3" flood-color="#000000" flood-opacity="0.6"></feDropShadow></filter>
+                </defs>
+                <text x="500" y="392" text-anchor="middle" filter="url(#bloom2)" opacity="0.4" fill="#E10600" font-family="'Cormorant Garamond',serif" font-weight="600" font-size="300" letter-spacing="6">
+                  <tspan>C</tspan><tspan>W</tspan><tspan>M</tspan>
+                </text>
+                <text x="500" y="392" text-anchor="middle" filter="url(#engrave2)" font-family="'Cormorant Garamond',serif" font-weight="600" font-size="300" letter-spacing="6" paint-order="stroke fill">
+                  <tspan fill="#F5F5F2">C</tspan><tspan fill="#F5F5F2" stroke="#E10600" stroke-width="4">W</tspan><tspan fill="#F5F5F2">M</tspan>
+                </text>
+              </svg>
+            </div>
+          </div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.08em;line-height:1.7;text-transform:uppercase;color:rgba(245,245,242,0.45);border-top:1px solid rgba(245,245,242,0.08);padding-top:16px;margin-top:10px;">C·W·M — Cormorant Garamond 600, tight tracking, centered. White fill, signal-red keyline on the central W, soft red bloom behind.</div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1.2fr;gap:24px;">
+        <!-- GRAIN -->
+        <div style="border:1px solid rgba(245,245,242,0.08);background:rgba(255,255,255,0.015);padding:34px;">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.26em;text-transform:uppercase;color:#E10600;margin-bottom:20px;">04 / Grain & Atmosphere</div>
+          <div style="position:relative;height:150px;background:radial-gradient(120% 110% at 50% 45%,#141010 0%,#070606 70%,#040404 100%);overflow:hidden;border:1px solid rgba(245,245,242,0.06);">
+            <div style="position:absolute;inset:0;background:radial-gradient(120% 110% at 50% 50%,rgba(0,0,0,0) 40%,rgba(0,0,0,0.85) 100%);"></div>
+            <div style="position:absolute;top:-50%;left:-50%;width:200%;height:200%;opacity:0.22;mix-blend-mode:overlay;animation:grain 0.7s steps(1) infinite;background-image:url(data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%27160%27%20height=%27160%27%3E%3Cfilter%20id=%27n2%27%3E%3CfeTurbulence%20type=%27fractalNoise%27%20baseFrequency=%270.8%27%20numOctaves=%272%27%20stitchTiles=%27stitch%27/%3E%3C/filter%3E%3Crect%20width=%27100%25%27%20height=%27100%25%27%20filter=%27url%28%23n2%29%27/%3E%3C/svg%3E);"></div>
+          </div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.08em;line-height:1.8;text-transform:uppercase;color:rgba(245,245,242,0.45);margin-top:16px;">feTurbulence · fractalNoise<br>baseFrequency 0.8 · 2 octaves<br>overlay blend · 17%→5% on scroll<br>Vignette: radial, 0→92% at edge</div>
+        </div>
+
+        <!-- GRID -->
+        <div style="border:1px solid rgba(245,245,242,0.08);background:rgba(255,255,255,0.015);padding:34px;">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.26em;text-transform:uppercase;color:#E10600;margin-bottom:20px;">05 / Grid & Spacing</div>
+          <div style="display:grid;grid-template-columns:repeat(12,1fr);gap:6px;height:150px;margin-bottom:16px;">
+            <div style="background:rgba(225,6,0,0.5);"></div><div style="background:rgba(245,245,242,0.07);"></div><div style="background:rgba(245,245,242,0.07);"></div><div style="background:rgba(245,245,242,0.07);"></div><div style="background:rgba(245,245,242,0.07);"></div><div style="background:rgba(245,245,242,0.07);"></div><div style="background:rgba(245,245,242,0.07);"></div><div style="background:rgba(245,245,242,0.07);"></div><div style="background:rgba(245,245,242,0.07);"></div><div style="background:rgba(245,245,242,0.07);"></div><div style="background:rgba(245,245,242,0.07);"></div><div style="background:rgba(225,6,0,0.5);"></div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:flex-end;margin-bottom:16px;height:48px;">
+            <div style="width:8px;height:8px;background:rgba(245,245,242,0.25);"></div>
+            <div style="width:16px;height:16px;background:rgba(245,245,242,0.3);"></div>
+            <div style="width:24px;height:24px;background:rgba(245,245,242,0.35);"></div>
+            <div style="width:32px;height:32px;background:rgba(245,245,242,0.4);"></div>
+            <div style="width:48px;height:48px;background:rgba(245,245,242,0.5);"></div>
+          </div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.08em;line-height:1.8;text-transform:uppercase;color:rgba(245,245,242,0.45);">12 columns · 1200px max-width<br>48px outer margin · 6–36px gutters<br>8px base scale: 8·16·24·32·48·64·96·160<br>One red hairline rule per section</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div style="background:#050505;border-top:1px solid rgba(245,245,242,0.08);padding:34px 48px;display:flex;justify-content:space-between;align-items:center;">
+    <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(245,245,242,0.35);">© MMXXVI — CWM</span>
+    <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(245,245,242,0.35);">Title card → resolved</span>
+  </div>
+
+</div>
+</x-dc>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script type="text/x-dc" data-dc-script data-props="{&quot;name&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Cameron W. McCann&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;role&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;grain&quot;:{&quot;editor&quot;:&quot;float&quot;,&quot;default&quot;:1,&quot;min&quot;:0,&quot;max&quot;:2,&quot;step&quot;:0.1,&quot;tsType&quot;:&quot;number&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      name: this.props.name ?? 'CARTER W. MERCER',
+      role: this.props.role ?? 'Director & Designer',
+      setRoot: (el) => { if (el && el !== this.root) { this.root = el; this._setup(); } }
+    };
+  }
+
+  _setup() {
+    const root = this.root;
+    const q = (s) => root.querySelector(s);
+    const L = {
+      track: q('[data-l=track]'),
+      haze: q('[data-l=haze]'), fog1: q('[data-l=fog1]'), fog2: q('[data-l=fog2]'),
+      mono: q('[data-l=mono]'), text: q('[data-l=heroText]'),
+      grain: q('[data-l=grain]'), vig: q('[data-l=vignette]'),
+      hint: q('[data-l=scrollHint]'), header: q('[data-l=header]')
+    };
+    this.L = L;
+    this.mx = this.my = this.tmx = this.tmy = 0;
+    this.gi = this.props.grain ?? 1;
+
+    const onMove = (e) => {
+      this.tmx = (e.clientX / window.innerWidth - 0.5) * 2;
+      this.tmy = (e.clientY / window.innerHeight - 0.5) * 2;
+    };
+    window.addEventListener('mousemove', onMove, { passive: true });
+    this._onMove = onMove;
+
+    const ease = (p) => p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
+    const lerp = (a, b, t) => a + (b - a) * t;
+    const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+
+    const loop = () => {
+      if (!L.track) return;
+      this.mx += (this.tmx - this.mx) * 0.07;
+      this.my += (this.tmy - this.my) * 0.07;
+      const mx = this.mx, my = this.my;
+
+      const rect = L.track.getBoundingClientRect();
+      const total = L.track.offsetHeight - window.innerHeight;
+      const p = total > 0 ? clamp(-rect.top / total, 0, 1) : 0;
+      const e = ease(p);
+      const calm = 1 - clamp(p * 1.5, 0, 1);
+
+      L.haze.style.transform = `scale(${1.06 + 0.05 * e}) translate(${mx * 8 * calm}px,${my * 8 * calm}px)`;
+      L.haze.style.opacity = lerp(1, 0.8, e);
+
+      const fs = e * window.innerWidth * 0.5;
+      L.fog1.style.transform = `translate(${-fs + mx * 20 * calm}px,${my * 12 * calm}px)`;
+      L.fog2.style.transform = `translate(${fs + mx * 20 * calm}px,${my * 12 * calm}px)`;
+      const fo = lerp(1, 0, clamp(p / 0.55, 0, 1));
+      L.fog1.style.opacity = fo; L.fog2.style.opacity = fo;
+
+      const sc = lerp(1, 0.155, e);
+      const tx = lerp(0, -(window.innerWidth / 2) + 92, e) + mx * 12 * calm;
+      const ty = lerp(0, -(window.innerHeight / 2) + 68, e) + my * 12 * calm;
+      L.mono.style.transform = `translate(${tx}px,${ty}px) scale(${sc})`;
+      L.mono.style.opacity = lerp(1, 0, clamp((p - 0.82) / 0.18, 0, 1));
+
+      L.grain.style.opacity = lerp(0.17, 0.05, e) * this.gi;
+      L.vig.style.opacity = lerp(1, 0.4, e);
+
+      L.text.style.opacity = lerp(1, 0, clamp(p / 0.4, 0, 1));
+      L.text.style.transform = `translate(${mx * 24 * calm}px,${my * 24 * calm - 24 * e}px)`;
+
+      L.hint.style.opacity = lerp(1, 0, clamp(p / 0.12, 0, 1));
+
+      L.header.style.opacity = clamp((p - 0.5) / 0.3, 0, 1);
+      L.header.style.pointerEvents = p > 0.7 ? 'auto' : 'none';
+
+      this._raf = requestAnimationFrame(loop);
+    };
+    this._raf = requestAnimationFrame(loop);
+  }
+
+  componentWillUnmount() {
+    if (this._raf) cancelAnimationFrame(this._raf);
+    if (this._onMove) window.removeEventListener('mousemove', this._onMove);
+  }
+}
+</script>
+</body>
+</html>
