@@ -71,7 +71,7 @@ export function InkBackground() {
 
     // Drive parallax/fade from the live Lenis scroll position (fallback to
     // the native scroll offset before Lenis has initialized).
-    const getScrollY = () => window.lenis?.scroll ?? window.scrollY;
+    const getScrollY = () => window.__lenis?.scroll ?? window.scrollY;
 
     // Draw the frame like CSS object-fit: cover — scaled to fill while keeping
     // the video's aspect ratio (no vertical stretch on portrait / mobile),

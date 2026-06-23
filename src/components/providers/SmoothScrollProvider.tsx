@@ -12,10 +12,12 @@ import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 // Expose the Lenis instance globally so non-context consumers (e.g. the
-// InkBackground canvas) can read the live scroll position via window.lenis.
+// InkBackground canvas) can read the live scroll position. We use a distinct
+// `__lenis` key: lenis ships its own `window.lenis` global declaration with a
+// different shape, so reusing that name breaks declaration merging.
 declare global {
   interface Window {
-    lenis?: Lenis;
+    __lenis?: Lenis;
   }
 }
 
@@ -67,7 +69,7 @@ export function SmoothScrollProvider({
       syncTouch: false,
     });
     lenisRef.current = lenis;
-    window.lenis = lenis;
+    window.__lenis = lenis;
 
     // Keep ScrollTrigger in lockstep with Lenis' virtual scroll position.
     lenis.on("scroll", ScrollTrigger.update);
@@ -84,7 +86,7 @@ export function SmoothScrollProvider({
       gsap.ticker.remove(onTick);
       lenis.destroy();
       lenisRef.current = null;
-      if (window.lenis === lenis) window.lenis = undefined;
+      if (window.__lenis === lenis) window.__lenis = undefined;
     };
   }, [reduced]);
 
