@@ -3,19 +3,22 @@
 @tailwind utilities;
 
 /* ============================================================
-   DESIGN TOKENS
-   Black & white with a single signal-red accent.
+   DESIGN TOKENS — "Ink & Ember"
+   Noir base, warm parchment type, a single signal-red accent.
    Mirrored in tailwind.config.ts — keep both in sync.
    ============================================================ */
 :root {
-  --bg: #0a0a0a; /* near-black base */
-  --bg-deep: #050505; /* deepest layer */
-  --fg: #dcd2c6; /* warm parchment — base body/prose text temperature */
-  --heading: #eee4d7; /* warm off-white — display headings */
-  --ember: #d23723; /* warm ember red — atmospheric mono labels */
+  --bg: #0a0908; /* near-black, warmed a hair */
+  --bg-deep: #050404; /* deepest layer */
+  --bg-raised: #131009; /* raised panels / hover washes */
+  --fg: #d8cec2; /* warm parchment — body text */
+  --heading: #f0e7da; /* warm off-white — display headings */
+  --ember: #d23723; /* warm ember red — atmospheric labels */
   --nav-link: #e1d7c8; /* warm nav-link tone */
   --red: #e10600; /* signal red — structural accent only */
   --red-deep: #b8000b; /* deep red — fills */
+  --hairline: rgba(216, 206, 194, 0.14); /* standard rule */
+  --hairline-strong: rgba(216, 206, 194, 0.28);
 }
 
 @layer base {
@@ -36,7 +39,7 @@
 
   ::selection {
     background: var(--red);
-    color: var(--bg);
+    color: #f0e7da;
   }
 
   /* Visible, on-brand focus ring for keyboard users. */
@@ -56,37 +59,44 @@
     text-transform: uppercase;
   }
 
-  /* ----------------------------------------------------------------
-     PROJECT BUTTON
-     Gumroad-inspired "lift + hard offset shadow" interaction, themed
-     to the site. The card keeps its resting colors; on hover it lifts
-     and reveals a signal-red hard offset shadow behind it.
-     ---------------------------------------------------------------- */
-  .project-button {
-    color: var(--fg);
-    background: var(--bg);
-    border: 1px solid rgba(245, 245, 242, 0.15);
-    border-radius: 4px;
-    transition:
-      transform 0.2s ease,
-      box-shadow 0.2s ease;
+  /* Underline that draws in from the left on hover/focus. */
+  .link-draw {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-repeat: no-repeat;
+    background-position: left bottom;
+    background-size: 0% 1px;
+    transition: background-size 0.45s cubic-bezier(0.22, 1, 0.36, 1);
   }
+  .link-draw:hover,
+  .link-draw:focus-visible {
+    background-size: 100% 1px;
+  }
+}
 
-  /* Mirror hover for keyboard focus. Colors stay put; red shadow appears. */
-  .project-button:hover,
-  .project-button:focus-visible {
-    transform: translate(-0.25rem, -0.25rem);
-    box-shadow: 0.25rem 0.25rem 0 var(--red);
-  }
-
-  .project-button:focus-visible {
-    outline-offset: 5px;
-  }
-
-  .project-button:active {
-    transform: translate(0, 0);
-    box-shadow: none;
-  }
+/* ============================================================
+   PROJECT ROW — cursor-tracked ember glow
+   Each row exposes --mx/--my (set from JS on pointermove); a soft
+   radial wash follows the cursor beneath the content.
+   ============================================================ */
+.glow-row {
+  position: relative;
+}
+.glow-row::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  background: radial-gradient(
+    420px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(210, 55, 35, 0.13),
+    transparent 65%
+  );
+  pointer-events: none;
+}
+.glow-row:hover::before,
+.glow-row:focus-within::before {
+  opacity: 1;
 }
 
 /* ============================================================

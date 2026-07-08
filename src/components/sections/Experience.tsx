@@ -1,117 +1,81 @@
-import { work, education, certifications } from "@/data/experience";
+import { certifications } from "@/data/experience";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { EducationIndex } from "./EducationIndex";
+import { WorkIndex } from "./WorkIndex";
 
 /**
- * SECTION 4 — Work Experience, Education & Certifications.
+ * SECTION 4 — Education, Work Experience & Certifications.
  * All entries live in src/data/experience.ts.
+ *
+ * Education leads as a ledger row; work renders as clickable index rows
+ * (see WorkIndex — company big, role, one-liner, detail dialog);
+ * certifications close the section as a compact grid.
  */
 export function Experience() {
   return (
     <section
       id="experience"
-      className="relative border-t border-fg/10 bg-bg py-28 sm:py-36"
+      className="relative border-t border-hairline bg-bg py-28 sm:py-36"
     >
       <div className="mx-auto max-w-container px-6 sm:px-12">
         <SectionHeading
+          index="03"
           eyebrow="Experience"
-          title="Work & Education"
+          title="Education & Work"
         />
 
-        <div className="mt-16 grid gap-14 md:grid-cols-2 md:gap-20">
-          {/* Work */}
-          <div>
-            <Reveal>
-              <h3 className="label mb-8 text-fg/45">Work</h3>
-            </Reveal>
-            <ol className="relative border-l border-fg/15">
-              {work.map((entry, i) => (
-                <Reveal key={`${entry.company}-${i}`} delay={i * 0.05}>
-                  <li className="relative mb-10 pl-8 last:mb-0">
-                    <Node />
-                    <span className="label text-fg/45">{entry.dates}</span>
-                    <h4 className="mt-1.5 font-display text-2xl font-medium leading-tight text-heading">
-                      {entry.role}
-                    </h4>
-                    <div className="label mt-1 text-ember">{entry.company}</div>
-                    {entry.meta && (
-                      <div className="mt-1.5 text-[12px] text-fg/40">
-                        {entry.meta}
-                      </div>
-                    )}
-                    <ul className="mt-3 flex flex-col gap-2">
-                      {entry.highlights.map((point, j) => (
-                        <li
-                          key={j}
-                          className="relative pl-4 text-[15px] leading-relaxed text-fg/65 before:absolute before:left-0 before:top-[0.6em] before:h-1 before:w-1 before:rounded-full before:bg-red/60"
-                        >
-                          {point}
-                        </li>
-                      ))}
-                    </ul>
-                  </li>
-                </Reveal>
-              ))}
-            </ol>
-          </div>
+        {/* Education index — click the row for the full coursework */}
+        <div className="mt-16">
+          <Reveal>
+            <h3 className="label mb-2 text-fg/45">Education</h3>
+          </Reveal>
+          <EducationIndex />
+        </div>
 
-          {/* Education */}
-          <div>
-            <Reveal>
-              <h3 className="label mb-8 text-fg/45">Education</h3>
-            </Reveal>
-            <ol className="relative border-l border-fg/15">
-              {education.map((entry, i) => (
-                <Reveal key={`${entry.school}-${i}`} delay={i * 0.05}>
-                  <li className="relative mb-10 pl-8 last:mb-0">
-                    <Node />
-                    <span className="label text-fg/45">{entry.dates}</span>
-                    <h4 className="mt-1.5 font-display text-2xl font-medium leading-tight text-heading">
-                      {entry.degree}
-                    </h4>
-                    <div className="label mt-1 text-ember">{entry.school}</div>
-                  </li>
-                </Reveal>
-              ))}
-            </ol>
+        {/* Work index — click a row for the full record */}
+        <div className="mt-20">
+          <Reveal>
+            <h3 className="label mb-2 text-fg/45">Work</h3>
+          </Reveal>
+          <WorkIndex />
+        </div>
 
-            {/* Certifications */}
-            <Reveal>
-              <h3 className="label mb-8 mt-14 text-fg/45">Certifications</h3>
-            </Reveal>
-            <ol className="relative border-l border-fg/15">
-              {certifications.map((entry, i) => (
-                <Reveal key={`${entry.name}-${i}`} delay={i * 0.05}>
-                  <li className="relative mb-10 pl-8 last:mb-0">
-                    <Node />
-                    {entry.status && (
-                      <span className="label text-fg/45">{entry.status}</span>
-                    )}
-                    <h4 className="mt-1.5 font-display text-2xl font-medium leading-tight text-heading">
+        {/* Certifications grid */}
+        <div className="mt-20">
+          <Reveal>
+            <h3 className="label mb-2 text-fg/45">Certifications</h3>
+          </Reveal>
+          <div className="grid border-t border-hairline sm:grid-cols-2 sm:gap-x-10">
+            {certifications.map((entry, i) => (
+              <Reveal key={`${entry.name}-${i}`} delay={i * 0.04}>
+                <div className="flex h-full items-baseline justify-between gap-6 border-b border-hairline py-6">
+                  <div>
+                    <h4 className="font-display text-[clamp(17px,1.7vw,22px)] font-normal leading-snug text-heading">
                       {entry.name}
                     </h4>
                     {entry.issuer && (
-                      <div className="label mt-1 text-ember">{entry.issuer}</div>
-                    )}
-                    {entry.credentialId && (
-                      <div className="mt-1.5 break-all font-mono text-[11px] text-fg/35">
-                        Credential ID {entry.credentialId}
+                      <div className="label mt-1.5 text-[10px] text-ember/90">
+                        {entry.issuer}
                       </div>
                     )}
-                  </li>
-                </Reveal>
-              ))}
-            </ol>
+                    {entry.credentialId && (
+                      <div className="mt-1.5 break-all font-mono text-[10px] text-fg/40">
+                        ID {entry.credentialId}
+                      </div>
+                    )}
+                  </div>
+                  {entry.status && (
+                    <span className="label shrink-0 whitespace-nowrap text-[10px] text-fg/40">
+                      {entry.status}
+                    </span>
+                  )}
+                </div>
+              </Reveal>
+            ))}
           </div>
         </div>
       </div>
     </section>
-  );
-}
-
-/** Red timeline node sitting on the vertical rule. */
-function Node() {
-  return (
-    <span className="absolute -left-[5px] top-1.5 h-2.5 w-2.5 rounded-full bg-red ring-4 ring-bg" />
   );
 }

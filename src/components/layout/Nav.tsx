@@ -19,16 +19,19 @@ export function Nav() {
   const { scrollTo } = useSmoothScroll();
   const reduced = usePrefersReducedMotion();
   const [visible, setVisible] = useState(false);
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    // Reveal a touch earlier when the cinematic transition is disabled.
-    // 0.9 brings the corner logo in just as the hero monogram finishes
-    // fading (~90% of the 100vh scrub), so the mark hands off to the corner.
-    const threshold = () => window.innerHeight * (reduced ? 0.5 : 0.9);
+    // Reveal as the title card resolves. The hero scrub completes at 50vh
+    // of scroll (150vh track − 100vh stage), so the nav arrives just as the
+    // smoke finishes its handoff into Who Am I.
+    const threshold = () => window.innerHeight * 0.5;
 
     let ticking = false;
     const update = () => {
       setVisible(window.scrollY > threshold());
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      setProgress(max > 0 ? Math.min(window.scrollY / max, 1) : 0);
       ticking = false;
     };
     const onScroll = () => {
@@ -66,11 +69,17 @@ export function Nav() {
       }`}
       style={{
         background:
-          "linear-gradient(180deg, #0A0A0A 30%, rgba(10,10,10,0))",
+          "linear-gradient(180deg, #0A0908 30%, rgba(10,9,8,0))",
       }}
       // Hide from the a11y tree (and tab order) until it's actually shown.
       aria-hidden={!visible}
     >
+      {/* Reading-progress hairline — rides the top edge of the frame. */}
+      <span
+        aria-hidden="true"
+        className="absolute inset-x-0 top-0 h-[2px] origin-left bg-red will-change-transform"
+        style={{ transform: `scaleX(${progress})` }}
+      />
       {/* Corner logo → back to top */}
       <a
         href="#top"
@@ -90,7 +99,7 @@ export function Nav() {
                 href={`#${link.id}`}
                 onClick={(e) => go(e, link.id)}
                 tabIndex={visible ? 0 : -1}
-                className="label text-[10px] text-nav-link/55 transition-colors hover:text-red sm:text-[11px]"
+                className="label link-draw pb-1 text-[10px] text-nav-link/55 transition-colors hover:text-red sm:text-[11px]"
               >
                 {link.label}
               </a>

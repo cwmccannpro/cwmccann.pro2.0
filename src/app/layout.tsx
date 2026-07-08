@@ -1,17 +1,18 @@
 import type { Metadata, Viewport } from "next";
-import { Cormorant_Garamond, Hanken_Grotesk, IBM_Plex_Mono } from "next/font/google";
+import { Fraunces, Hanken_Grotesk, IBM_Plex_Mono } from "next/font/google";
 import { site } from "@/data/site";
 import { SmoothScrollProvider } from "@/components/providers/SmoothScrollProvider";
-import { InkBackground } from "@/components/layout/InkBackground";
 import "./globals.css";
 
 /* Distinctive type pairing (loaded & self-hosted by next/font):
-   - Cormorant Garamond — high-contrast serif for the display voice
+   - Fraunces — high-contrast display serif with true italics; carries the
+     cinematic-editorial voice at every size
    - Hanken Grotesk — clean grotesque for body copy
    - IBM Plex Mono — technical labels & metadata                       */
-const display = Cormorant_Garamond({
+const display = Fraunces({
   subsets: ["latin"],
-  weight: ["500", "600", "700"],
+  weight: ["300", "400", "500", "600"],
+  style: ["normal", "italic"],
   variable: "--font-display",
   display: "swap",
 });
@@ -52,9 +53,10 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${display.variable} ${body.variable} ${mono.variable}`}
     >
-      <body className="bg-bg text-fg font-body antialiased">
+      <body suppressHydrationWarning className="bg-bg text-fg font-body antialiased">
         {/* Skip link for keyboard / screen-reader users */}
         <a
           href="#who"
@@ -62,8 +64,6 @@ export default function RootLayout({
         >
           Skip to content
         </a>
-        {/* Global cinematic ink atmosphere for the opening (ping-pong canvas) */}
-        <InkBackground />
         <SmoothScrollProvider>{children}</SmoothScrollProvider>
       </body>
     </html>

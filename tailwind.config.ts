@@ -10,18 +10,21 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        bg: "#0A0A0A", // near-black base
-        "bg-deep": "#050505", // deepest layer
-        fg: "#DCD2C6", // warm parchment — base body/prose text temperature
-        heading: "#EEE4D7", // warm off-white — display headings (a tier brighter than prose)
+        bg: "#0A0908", // near-black base, warmed a hair
+        "bg-deep": "#050404", // deepest layer
+        "bg-raised": "#131009", // raised panels / hover washes
+        fg: "#D8CEC2", // warm parchment — base body/prose text temperature
+        heading: "#F0E7DA", // warm off-white — display headings (a tier brighter than prose)
         ember: "#D23723", // warm ember red — atmospheric mono labels (not a UI-alert red)
         "nav-link": "#E1D7C8", // warm nav-link tone, lit by the same source as the ink
         red: "#E10600", // signal red — structural accent (borders, hairlines, shadows, hovers)
         "red-deep": "#B8000B", // deep red — fills
+        hairline: "rgba(216,206,194,0.14)", // standard rule
+        "hairline-strong": "rgba(216,206,194,0.28)",
       },
       fontFamily: {
         // Wired up via next/font in app/layout.tsx
-        display: ["var(--font-display)", "Cormorant Garamond", "serif"],
+        display: ["var(--font-display)", "Fraunces", "serif"],
         body: ["var(--font-body)", "Hanken Grotesk", "system-ui", "sans-serif"],
         mono: ["var(--font-mono)", "IBM Plex Mono", "monospace"],
       },

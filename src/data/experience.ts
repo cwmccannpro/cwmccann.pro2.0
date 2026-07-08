@@ -12,7 +12,9 @@ export type WorkEntry = {
   dates: string;
   /** Optional secondary line, e.g. "Full-time · Buffalo, NY · On-site" */
   meta?: string;
-  /** Bullet-point accomplishments. */
+  /** One-liner shown on the job's index row (blend of the highlights). */
+  summary: string;
+  /** Bullet-point accomplishments (shown in the detail dialog). */
   highlights: string[];
 };
 
@@ -21,6 +23,9 @@ export type EducationEntry = {
   school: string;
   /** e.g. "2018 — 2022" */
   dates: string;
+  /** Relevant coursework, e.g. "MTH 141 — College Calculus I". Shown in the
+   *  detail dialog when the education row is opened. */
+  courses?: string[];
 };
 
 export type CertificationEntry = {
@@ -39,6 +44,8 @@ export const work: WorkEntry[] = [
     company: "Roswell Park Comprehensive Cancer Center",
     dates: "Jan 2026 — Present",
     meta: "Full-time · Buffalo, NY · On-site",
+    summary:
+      "Power BI reporting and Epic EHR & identity support in a healthcare environment.",
     highlights: [
       "Build Power BI reports and dashboards that turn service and operational data into actionable insight on performance.",
       "Support Epic EHR workflows, clinical applications, and access management across Active Directory and Microsoft Entra ID in a healthcare environment.",
@@ -49,6 +56,8 @@ export const work: WorkEntry[] = [
     company: "University at Buffalo",
     dates: "Sep 2022 — Dec 2025",
     meta: "Part-time · Buffalo, NY · On-site",
+    summary:
+      "L2 escalation point across two ticketing systems; trained consultants and standardized support delivery.",
     highlights: [
       "Trained consultants and authored detailed process documentation, standardizing how the team delivered support.",
       "Served as an L2 escalation point across the Remedyforce and TDX ticketing systems, resolving hardware, software, and network issues for students and faculty.",
@@ -59,6 +68,8 @@ export const work: WorkEntry[] = [
     company: "Live Nation Entertainment",
     dates: "Apr 2025 — Nov 2025",
     meta: "Part-time · Corfu, NY · On-site",
+    summary:
+      "On-site IT leadership for live events — networking, POS, and digital signage end to end.",
     highlights: [
       "Provided on-site IT leadership during live events, documenting and resolving technical issues to keep operations running.",
       "Supported event IT infrastructure end to end — switches, access points, POS systems, and Videri digital signage — coordinating rapid configuration changes with remote teams.",
@@ -71,6 +82,27 @@ export const education: EducationEntry[] = [
     degree: "Computational & Applied Mathematics, Computer Science Minor",
     school: "University at Buffalo",
     dates: "Sep 2021 — Dec 2025",
+    courses: [
+      "MTH 141 — College Calculus I",
+      "MTH 142 — College Calculus II",
+      "MTH 241 — College Calculus III",
+      "MTH 306 — Differential Equations",
+      "MTH 309 — Linear Algebra",
+      "MTH 311 — Higher Mathematics",
+      "MTH 337 — Scientific & Math Computing",
+      "MTH 353 — Combinatorics I",
+      "MTH 411 — Probability Theory",
+      "MTH 417 — Multivariable Calculus",
+      "MTH 418 — Partial Differential Equations",
+      "MTH 437 — Numerical Analysis I",
+      "MTH 450 — Network Theory",
+      "MTH 455 — Complex Systems",
+      "CSE 116 — Computer Science II",
+      "CSE 191 — Discrete Structures",
+      "CSE 220 — Systems Programming",
+      "CSE 241 — Digital Systems",
+      "CSE 250 — Data Structures",
+    ],
   },
 ];
 

@@ -46,6 +46,13 @@ export const about = {
    *   skills: ["Python", "SQL", "Power BI", "Workflow Automation"],
    */
   skills: [] as string[],
+  /** Quick-facts grid rendered beside the bio. Edit freely. */
+  facts: [
+    { label: "Currently", value: "IT Analyst — Roswell Park" },
+    { label: "Based in", value: "Buffalo, NY" },
+    { label: "Education", value: "Applied Math · CS — UB" },
+    { label: "Focus", value: "Automation · Data · Systems" },
+  ],
 } as const;
 
 /**
@@ -54,7 +61,7 @@ export const about = {
  */
 export const navLinks: { label: string; id: string }[] = [
   { label: "About", id: "who" },
-  { label: "Work", id: "projects" },
+  { label: "Projects", id: "projects" },
   { label: "Experience", id: "experience" },
   { label: "Contact", id: "contact" },
 ];

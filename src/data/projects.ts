@@ -58,5 +58,15 @@ export const projects: Project[] = [
     // link: "https://...",
     // tags: ["AI", "Dashboard"],
   },
+  {
+    title: "Content Engine",
+    blurb: "Short-form content automation software.",
+    description:
+      "Content Engine automates the short-form content pipeline end to end — turning source material into edited, captioned, ready-to-post clips, so creators and brands can publish consistently without the manual grind.",
+    // TODO: add screenshots (drop files in public/projects/ and list them here)
+    // screenshots: ["/projects/content-engine-1.png"],
+    // link: "https://...",
+    // tags: ["AI", "Automation", "Video"],
+  },
   // 👇 Add more projects here — just copy the shape above.
 ];
