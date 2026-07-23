@@ -1,7 +1,8 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import type { ReactNode } from "react";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 /**
  * Scroll-reveal wrapper: fades + lifts its children into view once.
@@ -16,7 +17,9 @@ export function Reveal({
   className?: string;
   delay?: number;
 }) {
-  const reduced = useReducedMotion();
+  // SSR-safe (false on the server and first client paint) so the markup
+  // hydrates identically, then settles to the visitor's real preference.
+  const reduced = usePrefersReducedMotion();
 
   if (reduced) {
     return <div className={className}>{children}</div>;

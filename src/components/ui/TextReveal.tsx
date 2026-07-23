@@ -1,8 +1,9 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import type { ElementType, ReactNode } from "react";
 import { Children, Fragment, isValidElement } from "react";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 /**
  * TextReveal — masked word-by-word heading reveal.
@@ -33,7 +34,9 @@ export function TextReveal({
   stagger?: number;
   once?: boolean;
 }) {
-  const reduced = useReducedMotion();
+  // SSR-safe (false on the server and first client paint) so the markup
+  // hydrates identically, then settles to the visitor's real preference.
+  const reduced = usePrefersReducedMotion();
 
   // Flatten children into an ordered list of "units": plain words split
   // from strings, plus any React elements kept whole.

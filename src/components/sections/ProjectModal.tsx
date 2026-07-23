@@ -48,6 +48,23 @@ export function ProjectModal({
             {project.description ?? project.blurb}
           </p>
 
+          {project.highlights && project.highlights.length > 0 && (
+            <ul className="mt-8 flex max-w-prose flex-col gap-3.5">
+              {project.highlights.map((item) => (
+                <li
+                  key={item}
+                  className="grid grid-cols-[auto_1fr] gap-x-3.5 text-[15px] leading-relaxed text-fg/70"
+                >
+                  <span
+                    aria-hidden="true"
+                    className="mt-[9px] h-px w-4 bg-ember"
+                  />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+
           {project.link && (
             <a
               href={project.link}

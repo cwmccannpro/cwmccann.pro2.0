@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { useSmoothScroll } from "@/components/providers/SmoothScrollProvider";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 /**
  * DetailModal — shared accessible dialog shell for the index sections
@@ -27,7 +28,7 @@ export function DetailModal({
   labelledBy: string;
   children: React.ReactNode;
 }) {
-  const reduced = useReducedMotion();
+  const reduced = usePrefersReducedMotion();
   const { stop, start } = useSmoothScroll();
   const panelRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);

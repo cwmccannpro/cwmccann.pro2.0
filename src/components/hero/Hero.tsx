@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { gsap } from "@/lib/gsap";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { useMouseParallax } from "@/hooks/useMouseParallax";
-import { HeroShader } from "./HeroShader";
+import { HeroEmberVideo } from "./HeroEmberVideo";
 import { TextReveal } from "@/components/ui/TextReveal";
 import { site } from "@/data/site";
 
@@ -42,6 +42,21 @@ export function Hero() {
   // Avoid an SSR/client hydration mismatch on the track height.
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
+
+  // True only while the hero stage is on screen. Drives pausing the ember
+  // video and the film-grain animation once the title card scrolls away, so
+  // no offscreen loop keeps the compositor (and GPU/battery) busy.
+  const [inView, setInView] = useState(true);
+  useEffect(() => {
+    const stage = stageRef.current;
+    if (!stage) return;
+    const io = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { threshold: 0 },
+    );
+    io.observe(stage);
+    return () => io.disconnect();
+  }, []);
 
   // Light pointer drift on every [data-depth] wrapper inside the stage.
   useMouseParallax(stageRef, !reduced);
@@ -121,15 +136,18 @@ export function Hero() {
         ref={stageRef}
         className="sticky top-0 h-[100svh] overflow-hidden bg-bg-deep"
       >
-        {/* LAYER 1 — the Ember Nebula: WebGL smoke shader, seated into the
-            noir base by a soft radial falloff on top. */}
+        {/* LAYER 1 — the Molten Ink plate: photoreal ember-smoke cinema
+            loop, seated into the noir base by a soft radial falloff on top. */}
         <div data-depth="0.12" className="absolute inset-[-8%]">
           <div
             ref={hazeRef}
             className="absolute inset-0 will-change-transform"
             style={{ transform: "scale(1.06)" }}
           >
-            <HeroShader className="absolute inset-0 h-full w-full" />
+            <HeroEmberVideo
+              className="absolute inset-0 h-full w-full"
+              paused={!inView}
+            />
             <div
               aria-hidden="true"
               className="absolute inset-0"
@@ -199,11 +217,14 @@ export function Hero() {
           </div>
         </motion.div>
 
-        {/* LAYER 5 — animated film grain (CSS keyframe; opacity scrubbed) */}
+        {/* LAYER 5 — animated film grain (CSS keyframe; opacity scrubbed).
+            The infinite keyframe is halted once the hero leaves view so the
+            large mix-blend layer stops repainting offscreen. */}
         <div
           ref={grainRef}
           aria-hidden="true"
           className="grain pointer-events-none absolute -left-1/2 -top-1/2 z-[6] h-[200%] w-[200%] opacity-[0.17] mix-blend-overlay"
+          style={{ animationPlayState: inView ? "running" : "paused" }}
         />
 
         {/* LAYER 6 — deep vignette frame */}

@@ -1,7 +1,7 @@
 import { contactLinks } from "@/data/contact";
 import { Reveal } from "@/components/ui/Reveal";
 import { TextReveal } from "@/components/ui/TextReveal";
-import { ScrollVideoBackground } from "./ScrollVideoBackground";
+import { LoopingVideoBackground } from "./LoopingVideoBackground";
 
 /** SECTION 5 — Contact. Links come from src/data/contact.ts. */
 export function Contact() {
@@ -10,13 +10,9 @@ export function Contact() {
       id="contact"
       className="relative overflow-hidden border-t border-hairline bg-bg-deep py-28 sm:py-40"
     >
-      {/* Scroll-scrubbed water video — finishes at the page bottom since
-          this is the last section. Faint accent behind the content. */}
-      <ScrollVideoBackground
-        src="/water.mp4"
-        end="max"
-        opacityClassName="opacity-[0.08]"
-      />
+      {/* Looping water video — plays on its own loop (independent of
+          scroll). Faint accent behind the content. */}
+      <LoopingVideoBackground src="/water.mp4" opacityClassName="opacity-[0.08]" />
 
       <div className="relative z-10 mx-auto max-w-container px-6 sm:px-12">
         <Reveal>
